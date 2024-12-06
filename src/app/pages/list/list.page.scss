@@ -1,0 +1,43 @@
+.main-content {
+  padding: 16px;
+}
+
+.results {
+  margin-bottom: 16px;
+}
+
+.employeeItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.employeeItem img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.employeeItem ion-label {
+  flex: 1;
+  padding-left: 10px;
+}
+
+.employeeItem ion-button {
+  --padding-start: 0;
+  --padding-end: 0;
+}
+ion-button {
+  --box-shadow: none;
+  --border-radius: 10px;
+  --background: linear-gradient(
+      90deg,
+      rgba(250, 87, 142, 1) 0%,
+      rgba(254, 171, 142, 1) 100%
+  );
+  height: 48px;
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-transform: initial;
+}

@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="light">
+        <ion-icon name="chevron-back"></ion-icon>
+        &nbsp;Employee List
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button routerLink="/movies" color="light">
+        Movies&nbsp;
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <div class="main-content">
+
+    <ion-card-subtitle class="results">
+      {{ results.length }} {{ results.length === 1 ? 'employee' : 'employees' }} found
+    </ion-card-subtitle>
+
+    <ion-searchbar (ionInput)="search($event)" placeholder="Search..." slot="end"></ion-searchbar>
+
+    <ion-list>
+      <ion-item *ngFor="let employee of results" [id]="'employeeItem_' + employee.id" lines="none">
+        <img [src]="employee.avatar" alt="employee avatar" />
+
+        <ion-label>
+          <h2>{{ employee.name }}</h2>
+          <p>{{ employee.title }}</p>
+        </ion-label>
+
+        <ion-button (click)="remove(employee.id)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block">Add new employee</ion-button>
+</ion-footer>
