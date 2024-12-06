@@ -15,12 +15,14 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import * as ionIcons from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import {provideHttpClient} from "@angular/common/http";
 addIcons(ionIcons);
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
+    provideHttpClient(),
     provideRouter(
       routes,
       withPreloading(PreloadAllModules),

@@ -1,14 +1,50 @@
 <ion-content class="ion-padding">
-<div class="logo-div">
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <ion-img class="mx-auto h-52 w-auto" src="assets/logo.svg" alt="Your Company"></ion-img>
+      <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">İzmir İncisi</h2>
+    </div>
+    <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div>
+          <label for="user" class="block text-sm/6 font-medium text-gray-900">Kullanıcı Adı</label>
+          <div class="mt-2">
+            <input
+              id="user"
+              formControlName="user"
+              type="text"
+              autocomplete="username"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-base text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+            <small *ngIf="loginForm.get('user')?.invalid && loginForm.get('user')?.touched" class="text-red-500">
+              {{ getErrorMessage('user') }}
+            </small>
+          </div>
+        </div>
 
+        <div>
+          <label for="password" class="block text-sm/6 font-medium text-gray-900">Şifre</label>
+          <div class="mt-2">
+            <input
+              id="password"
+              formControlName="password"
+              type="password"
+              autocomplete="current-password"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-base text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+            <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500">
+              {{ getErrorMessage('password') }}
+            </small>
+          </div>
+        </div>
 
-  <ion-img src="assets/logo.svg" alt="App Logo" class="logo" style="width: 200px"></ion-img></div>
-  <h1>Hoş Geldiniz</h1>
-  <h3>İzmir İncisi</h3>
-
-  <form>
-    <app-input label="Kullanıcı adı"></app-input>
-    <app-input label="Şifre giriniz" type="password"></app-input>
-    <app-button  label='Giriş Yap' ></app-button>
-  </form>
+        <div>
+          <button
+            type="submit"
+            [disabled]="loginForm.invalid"
+            class="flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            Giriş Yap
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </ion-content>
