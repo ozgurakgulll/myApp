@@ -7,7 +7,20 @@ const routes: Routes = [
     children: [
       {
         path: 'list',
-        loadChildren: () => import('./list/list.module').then(m => m.ListModule),
+        loadChildren: () =>
+          import('./list/list.module').then((m) => m.ListModule),
+      },
+      {
+        path: 'order-detail/:orderId',
+        loadChildren: () =>
+          import('./order-detail/order-detail.module').then(
+            (m) => m.OrderDetailPageModule
+          ),
+      },
+      {
+        path: 'new-order',
+        loadComponent: () =>
+          import('./new-order/new-order.page').then((m) => m.NewOrderPage),
       },
       { path: '', redirectTo: 'list', pathMatch: 'full' },
     ],

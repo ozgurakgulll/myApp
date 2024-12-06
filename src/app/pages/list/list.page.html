@@ -1,14 +1,14 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button color="light">
+      <ion-button>
         <ion-icon name="chevron-back"></ion-icon>
         &nbsp;Employee List
       </ion-button>
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button routerLink="/movies" color="light">
+      <ion-button routerLink="/movies">
         Movies&nbsp;
         <ion-icon name="chevron-forward"></ion-icon>
       </ion-button>
@@ -18,20 +18,32 @@
 
 <ion-content fullscreen>
   <div class="main-content">
-
     <ion-card-subtitle class="results">
-      {{ results.length }} {{ results.length === 1 ? 'employee' : 'employees' }} found
+      {{ results.length }} {{ results.length === 1 ? 'employee' : 'employees' }}
+      found
     </ion-card-subtitle>
 
-    <ion-searchbar (ionInput)="search($event)" placeholder="Search..." slot="end"></ion-searchbar>
+    <ion-searchbar
+      (ionInput)="search($event)"
+      placeholder="Search..."
+      slot="end"
+    ></ion-searchbar>
 
     <ion-list>
-      <ion-item *ngFor="let employee of results" [id]="'employeeItem_' + employee.id" lines="none">
-        <img [src]="employee.avatar" alt="employee avatar" />
+      <ion-item
+        *ngFor="let employee of results"
+        [id]="'employeeItem_' + employee.id"
+        lines="none"
+        routerLink="/order-detail/{{employee.id}}"
+        routerDirection="forward"
+      >
+        <ion-avatar>
+          <img [src]="employee.image" alt="employee avatar" />
+        </ion-avatar>
 
         <ion-label>
-          <h2>{{ employee.name }}</h2>
-          <p>{{ employee.title }}</p>
+          <h2>{{ employee.customerName }}</h2>
+          <p>{{ employee.cakeContent }}</p>
         </ion-label>
 
         <ion-button (click)="remove(employee.id)">
@@ -43,5 +55,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-button expand="block">Add new employee</ion-button>
+  <ion-button expand="block" routerLink="/new-order">
+    Yeni Sipariş Ekle
+  </ion-button>
 </ion-footer>
