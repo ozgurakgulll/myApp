@@ -1,22 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PagesRoutingModule } from './pages-routing.module';
-import {IonContent, IonHeader, IonRouterOutlet, IonTitle, IonToolbar} from "@ionic/angular/standalone";
 import {FormsModule} from "@angular/forms";
+import {PagesComponent} from "./pages.component";
+import {IonicModule} from "@ionic/angular";
 
 
 @NgModule({
   imports: [
     CommonModule,
     PagesRoutingModule,
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     FormsModule,
-    IonRouterOutlet
+    IonicModule
   ],
   providers: [],
-  declarations:[]
+  declarations:[PagesComponent]
 })
 export class PagesModule {}

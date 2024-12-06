@@ -1,0 +1,43 @@
+<ion-content fullscreen [scrollY]="true">
+
+   <ion-card>
+    <ion-card-header>
+        <div class="flex justify-between sm:flex-row flex-col gap-4 w-full items-stretch sm:items-center">
+          <span>
+          Toplam <strong>{{ users.length }}</strong> kullanıcı bulundu
+        </span>
+
+          <div  >
+            <ion-button expand="block" (click)="userAddModal.present()"  >
+              <ion-icon name="add-outline"></ion-icon>
+              <ion-label class="ml-2">Ekle</ion-label>
+            </ion-button>
+          </div>
+        </div>
+    </ion-card-header>
+<ion-card-content>
+
+
+  <ion-list >
+    <ion-item *ngFor="let user of users">
+      <ion-label>
+        <h2>{{ user.username }}</h2>
+        @if(user.fullname) {
+          <p>Tam Adı: {{ user.fullname }}</p>
+        }
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="onDeleteUser(user.id)" color="danger">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</ion-card-content>
+   </ion-card>
+
+</ion-content>
+
+<ion-modal #userAddModal [initialBreakpoint]="0.95">
+  <ng-template></ng-template>
+</ion-modal>

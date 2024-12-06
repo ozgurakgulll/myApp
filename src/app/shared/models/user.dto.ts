@@ -1,5 +1,7 @@
 export class User {
-  readonly id: string = '';
-  email: string = '';
-  password: string = '';
+  readonly id?: string = '';
+  username?: string = '';
+  fullname?: string = '';
+  role?:'user'|'admin'
+  password?: string = '';
 }

@@ -11,12 +11,12 @@
           <div class="mt-2">
             <input
               id="user"
-              formControlName="user"
+              formControlName="username"
               type="text"
-              autocomplete="username"
+              autocomplete="kullanıcı adı"
               class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-base text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
-            <small *ngIf="loginForm.get('user')?.invalid && loginForm.get('user')?.touched" class="text-red-500">
-              {{ getErrorMessage('user') }}
+            <small *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="text-red-500">
+              {{ getErrorMessage('username') }}
             </small>
           </div>
         </div>
@@ -37,10 +37,13 @@
         </div>
 
         <div>
+          <div class="text-red-600">
+            {{errorMessager}}
+          </div>
           <button
             type="submit"
             [disabled]="loginForm.invalid"
-            class="flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            class="disabled:bg-gray-500 flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             Giriş Yap
           </button>
         </div>

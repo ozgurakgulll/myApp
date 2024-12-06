@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{ this.userInfo['username'] }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onLogout()"><ion-icon name="enter-outline"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-tabs *ngIf="this.userInfo['role'] === 'admin'" >
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="list" color="primary">
+        <ion-icon name="documents-outline"></ion-icon>
+        <ion-label>Siparişler</ion-label>
+      </ion-tab-button>
+
+      <!-- Only show this tab if the user is an admin -->
+      <ion-tab-button tab="users" color="primary">
+        <ion-icon name="people-outline"></ion-icon>
+        <ion-label>Kullanıcılar</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+
+  </ion-tabs>
+</ion-content>
