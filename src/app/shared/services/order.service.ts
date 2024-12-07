@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Order} from "../models/order.dto";
+import { Order } from "../models/order.dto";
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = 'http://192.168.1.115:3000/';
+  private apiUrl = 'http://192.168.1.115:3000/'; // API URL'niz
+
   constructor(private http: HttpClient) {}
 
+  // Tüm siparişleri getir
   getAllOrders(): Observable<Order[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<Order[]>(`${this.apiUrl}orders`);
   }
 
+  // Yeni sipariş oluştur
   createOrder(orderData: Order): Observable<Order> {
-    return this.http.post<any>(this.apiUrl, orderData);
+    return this.http.post<Order>(`${this.apiUrl}orders`, orderData);
   }
 
+  // Siparişi güncelle
   updateOrder(orderId: string, orderData: Order): Observable<Order> {
-    return this.http.put<any>(`${this.apiUrl}/${orderId}`, orderData);
+    return this.http.put<Order>(`${this.apiUrl}orders/${orderId}`, orderData);
   }
 
-  deleteOrder(orderId: string): Observable<Order> {
-    return this.http.delete<any>(`${this.apiUrl}/${orderId}`);
+  // Siparişi sil
+  deleteOrder(orderId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}orders/${orderId}`);
   }
 }

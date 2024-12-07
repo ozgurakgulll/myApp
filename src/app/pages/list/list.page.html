@@ -1,42 +1,226 @@
 <ion-content fullscreen>
-  <div class="main-content">
-    <ion-card-subtitle class="results">
-      {{ results.length }} {{ results.length === 1 ? 'employee' : 'employees' }}
-      found
-    </ion-card-subtitle>
-    <ion-searchbar
-      (ionInput)="search($event)"
-      placeholder="Search..."
-      slot="end"
-    ></ion-searchbar>
-    <ion-list>
-      <ion-item
-        *ngFor="let employee of results"
-        [id]="'employeeItem_' + employee.id"
-        lines="none"
-        routerLink="/order-detail/{{employee.id}}"
-        routerDirection="forward"
-      >
-        <ion-avatar>
-          <img [src]="employee.image" alt="employee avatar" />
-        </ion-avatar>
-
-        <ion-label>
-          <h2>{{ employee.customerName }}</h2>
-          <p>{{ employee.cakeContent }}</p>
-        </ion-label>
-
-        <ion-button (click)="remove(employee.id)">
-          <ion-icon name="trash-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </ion-list>
-  </div>
+  <ion-card>
+    <ion-card-header>
+      <div class="flex justify-between sm:flex-row flex-col gap-4 w-full items-stretch sm:items-center">
+        <span>
+          Toplam <strong>{{ orders.length }}</strong> sipariş bulundu
+        </span>
+      </div>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let order of orders">
+          <ion-label>
+            <h2 class="flex">
+              {{ order.orderNo }}
+            </h2>
+          </ion-label>
+          <ion-buttons slot="end">
+            <ion-button (click)="editOrder(order.id)">
+              Düzenle
+            </ion-button>
+            <ion-button color="danger" (click)="deleteOrder(order.id)">
+              Sil
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
 <ion-footer>
   <button
+    (click)="orderAddModal.present()"
     type="submit"
     class="disabled:bg-gray-500 flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
     Yeni Sipariş Ekle
   </button>
 </ion-footer>
+
+<ion-modal #orderAddModal >
+  <ng-template>
+    <ion-content>
+      <div class="p-4">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ currentOrderId ? 'Siparişi Düzenle' : 'Yeni Sipariş Ekle' }}</h2>
+
+        <form [formGroup]="orderForm" (ngSubmit)="currentOrderId ? updateOrder() : addOrder()">
+          <div class="space-y-4">
+
+            <!-- Order Number -->
+            <div class="relative">
+              <label for="orderNo" class="block text-sm font-semibold text-gray-700">Sipariş Numarası</label>
+              <input
+                id="orderNo"
+                formControlName="orderNo"
+                type="text"
+                class="block w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Sipariş Numarası"
+                required
+              />
+              <div *ngIf="orderForm.controls['orderNo'].invalid && orderForm.controls['orderNo'].touched" class="text-red-500 text-xs">
+                Sipariş numarası gereklidir.
+              </div>
+            </div>
+
+            <!-- Cake Size -->
+            <div class="relative">
+              <label for="cakeSize" class="block text-sm font-semibold text-gray-700">Pastanın Boyutu</label>
+              <input
+                id="cakeSize"
+                formControlName="cakeSize"
+                type="text"
+                class="block w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Pastanın Boyutu"
+                required
+              />
+              <div *ngIf="orderForm.controls['cakeSize'].invalid && orderForm.controls['cakeSize'].touched" class="text-red-500 text-xs">
+                Pastanın boyutu gereklidir.
+              </div>
+            </div>
+
+            <!-- Cake Content -->
+            <div class="relative">
+              <label for="cakeContent" class="block text-sm font-semibold text-gray-700">Pastanın İçeriği</label>
+              <input
+                id="cakeContent"
+                formControlName="cakeContent"
+                type="text"
+                class="block w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Pastanın İçeriği"
+                required
+              />
+              <div *ngIf="orderForm.controls['cakeContent'].invalid && orderForm.controls['cakeContent'].touched" class="text-red-500 text-xs">
+                Pastanın içeriği gereklidir.
+              </div>
+            </div>
+
+            <!-- Order Date -->
+            <div class="relative">
+              <label for="orderDate" class="block text-sm font-semibold text-gray-700">Sipariş Tarihi</label>
+              <input
+                id="orderDate"
+                formControlName="orderDate"
+                type="date"
+                class="block w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                [value]="currentDate"
+                required
+              />
+              <div *ngIf="orderForm.controls['orderDate'].invalid && orderForm.controls['orderDate'].touched" class="text-red-500 text-xs">
+                Sipariş tarihi gereklidir.
+              </div>
+            </div>
+
+            <!-- Customer Name -->
+            <div class="relative">
+              <label for="customerName" class="block text-sm font-semibold text-gray-700">Müşteri Adı</label>
+              <input
+                id="customerName"
+                formControlName="customerName"
+                type="text"
+                class="block w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Müşteri Adı"
+                required
+              />
+              <div *ngIf="orderForm.controls['customerName'].invalid && orderForm.controls['customerName'].touched" class="text-red-500 text-xs">
+                Müşteri adı gereklidir.
+              </div>
+            </div>
+
+            <!-- Customer Phone -->
+            <div class="relative">
+              <label for="customerPhone" class="block text-sm font-semibold text-gray-700">Müşteri Telefonu</label>
+              <input
+                id="customerPhone"
+                formControlName="customerPhone"
+                type="text"
+                class="block w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Müşteri Telefonu"
+                required
+              />
+              <div *ngIf="orderForm.controls['customerPhone'].invalid && orderForm.controls['customerPhone'].touched" class="text-red-500 text-xs">
+                Müşteri telefon numarası gereklidir.
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="relative">
+              <label for="description" class="block text-sm font-semibold text-gray-700">Açıklama</label>
+              <textarea
+                id="description"
+                formControlName="description"
+                class="block w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Açıklama"
+              ></textarea>
+            </div>
+
+            <!-- Balance -->
+            <div class="relative">
+              <label for="balance" class="block text-sm font-semibold text-gray-700">Bakiye</label>
+              <input
+                id="balance"
+                formControlName="balance"
+                type="number"
+                class="block w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Bakiye"
+                required
+              />
+              <div *ngIf="orderForm.controls['balance'].invalid && orderForm.controls['balance'].touched" class="text-red-500 text-xs">
+                Bakiye gereklidir.
+              </div>
+            </div>
+
+            <!-- Deposit -->
+            <div class="relative">
+              <label for="deposit" class="block text-sm font-semibold text-gray-700">Peşinat</label>
+              <input
+                id="deposit"
+                formControlName="deposit"
+                type="number"
+                class="block w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Peşinat"
+              />
+            </div>
+
+            <!-- Status -->
+            <div class="relative">
+              <label for="status" class="block text-sm font-semibold text-gray-700">Durum</label>
+              <select
+                id="status"
+                formControlName="status"
+                class=" w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="todo">Yapılacak</option>
+                <option value="completed">Tamamlandı</option>
+                <option value="pending">Beklemede</option>
+                <option value="canceled">İptal</option>
+              </select>
+            </div>
+
+
+            <div class="flex justify-between mt-8 space-x-2">
+
+              <button
+                (click)="orderAddModal.dismiss()"
+                class="w-full py-2 px-4 bg-gray-500 hover:bg-indigo-500 text-white rounded-md focus:ring-2 focus:ring-indigo-500"
+              >
+                Kapat
+              </button>
+
+              <button
+                  type="submit"
+                  class="w-full py-2 px-4 disabled:bg-gray-500 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md focus:ring-2 focus:ring-indigo-500"
+                  [disabled]="orderForm.invalid"
+                >
+                  {{ currentOrderId ? 'Güncelle' : 'Ekle' }}
+                </button>
+
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>
