@@ -4,13 +4,11 @@
       {{ results.length }} {{ results.length === 1 ? 'employee' : 'employees' }}
       found
     </ion-card-subtitle>
-
     <ion-searchbar
       (ionInput)="search($event)"
       placeholder="Search..."
       slot="end"
     ></ion-searchbar>
-
     <ion-list>
       <ion-item
         *ngFor="let employee of results"
@@ -35,9 +33,10 @@
     </ion-list>
   </div>
 </ion-content>
-
 <ion-footer>
-  <ion-button expand="block" routerLink="/new-order">
+  <button
+    type="submit"
+    class="disabled:bg-gray-500 flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
     Yeni Sipariş Ekle
-  </ion-button>
+  </button>
 </ion-footer>

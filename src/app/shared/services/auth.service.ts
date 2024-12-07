@@ -7,7 +7,7 @@ import {User} from "../models/user.dto";
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://192.168.1.114:3000/';
+  private apiUrl = 'http://192.168.1.115:3000/';
 
   constructor(private http: HttpClient) {}
 
@@ -16,14 +16,15 @@ export class AuthService {
   }
 
 
-  createUser(userData: any): Observable<User> {
-    return this.http.post<any>(this.apiUrl, userData);
+  createUser(userData: User): Observable<User> {
+    return this.http.post<any>(`${this.apiUrl}auth/create-user`, userData);
   }
 
 
   deleteUser(userId: string): Observable<User> {
-    return this.http.delete<any>(`${this.apiUrl}/${userId}`);
+    return this.http.delete<any>(`${this.apiUrl}user-delete/${userId}`);
   }
+
   login(userData: { user: string; password: string }): Observable<{ access_token: string,userInfo:User }> {
     return this.http.post<{ access_token: string,userInfo:User }>(`${this.apiUrl}auth/login`, userData);
   }

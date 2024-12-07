@@ -20,4 +20,7 @@ export class PagesComponent  implements OnInit {
     localStorage.removeItem('userInfo')
     this._navCtrl.navigateForward('/login').then(r => {});
   }
+  onRefresh():void{
+    window.location.reload()
+  }
 }

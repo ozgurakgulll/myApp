@@ -7,7 +7,7 @@ import {Order} from "../models/order.dto";
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = 'http://192.168.1.114:3000/';
+  private apiUrl = 'http://192.168.1.115:3000/';
   constructor(private http: HttpClient) {}
 
   getAllOrders(): Observable<Order[]> {
