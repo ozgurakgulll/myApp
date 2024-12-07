@@ -16,14 +16,14 @@ export class OrderService {
     return this.http.get<Order[]>(`${this.apiUrl}orders`);
   }
 
-  // Yeni sipariş oluştur
+
   createOrder(orderData: Order): Observable<Order> {
     return this.http.post<Order>(`${this.apiUrl}orders`, orderData);
   }
 
-  // Siparişi güncelle
+
   updateOrder(orderId: string, orderData: Order): Observable<Order> {
-    return this.http.put<Order>(`${this.apiUrl}orders/${orderId}`, orderData);
+    return this.http.patch<Order>(`${this.apiUrl}orders/${orderId}`, orderData);
   }
 
   // Siparişi sil

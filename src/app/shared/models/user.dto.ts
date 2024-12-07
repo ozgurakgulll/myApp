@@ -5,3 +5,11 @@ export class User {
   role?:'user'|'admin'|'superAdmin'
   password?: string = '';
 }
+
+export interface LastUpdate {
+  userId?: string;
+
+  username?: string;
+
+  updatedDate?: string;
+}

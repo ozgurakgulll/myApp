@@ -1,4 +1,4 @@
-import { User } from './user.dto';
+import {LastUpdate, User} from './user.dto';
 
 export class Order {
   readonly id: string = '';
@@ -16,7 +16,7 @@ export class Order {
   deposit?: number;
   image?: string;
   status?: 'pending' | 'completed' | 'todo' | 'canceled' = 'todo';
-
+  updated?:LastUpdate[]
   constructor() {
     this.orderNo = '';
     this.orderDate = new Date();

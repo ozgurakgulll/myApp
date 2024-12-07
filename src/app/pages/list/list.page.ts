@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OrderService } from "../../shared/services/order.service";
-import { AlertController, ToastController } from "@ionic/angular";
+import {IonPopover, ToastController} from "@ionic/angular";
 import { Order } from "../../shared/models/order.dto";
+import {LastUpdate} from "../../shared/models/user.dto";
 
 @Component({
   selector: 'app-list',
@@ -12,14 +13,15 @@ import { Order } from "../../shared/models/order.dto";
 })
 export class ListPage implements OnInit {
   @ViewChild('orderAddModal') orderAddModal!: HTMLIonModalElement;
+  @ViewChild('popover') popover!: IonPopover;
   orders: Order[] = [];
+  selectOrder!: Order;
   orderForm!: FormGroup;
   currentOrderId: string | null = null;
-  currentDate: string = new Date().toISOString().split('T')[0]; // Get the current date in ISO format.
-
+  currentDate: string = new Date().toISOString().split('.')[0]
+  lastUpdate:LastUpdate[]=[]
   constructor(
     private _orderService: OrderService,
-    private alertController: AlertController,
     private toastController: ToastController,
     private fb: FormBuilder
   ) {}
@@ -27,15 +29,15 @@ export class ListPage implements OnInit {
   ngOnInit() {
     this.fetchOrders();
     this.orderForm = this.fb.group({
-      orderNo: ['', Validators.required],
-      cakeSize: ['', Validators.required],
-      cakeContent: ['', Validators.required],
+      orderNo: [''],
+      cakeSize: ['6', Validators.required],
+      cakeContent: ['Çikolatalı', Validators.required],
       orderDate: [this.currentDate, Validators.required],
       customerName: ['', Validators.required],
       customerPhone: ['', Validators.required],
       description: [''],
-      balance: ['', Validators.required],
-      deposit: [''],
+      balance: ['0', Validators.required],
+      deposit: ['0'],
       status: ['todo']
     });
   }
@@ -53,6 +55,7 @@ export class ListPage implements OnInit {
         this.orders.push(newOrder);
         this.showToast('Sipariş başarıyla eklendi!');
         this.orderAddModal.dismiss();
+        this.fetchOrders()
       },
       (error) => {
         this.showToast('Sipariş eklenirken bir hata oluştu!');
@@ -71,6 +74,7 @@ export class ListPage implements OnInit {
           }
           this.showToast('Sipariş başarıyla güncellendi!');
           this.orderAddModal.dismiss();
+          this.fetchOrders();
         },
         (error) => {
           this.showToast('Sipariş güncellenirken bir hata oluştu!');
@@ -79,11 +83,19 @@ export class ListPage implements OnInit {
     }
   }
 
-  editOrder(orderId: string) {
+  editOrder(orderId: string,updated:LastUpdate[]) {
+    this.lastUpdate=updated
     this.currentOrderId = orderId;
     const order = this.orders.find(order => order.id === orderId);
     if (order) {
-      this.orderForm.patchValue(order);
+      const formattedDate = order.orderDate
+        ? new Date(order.orderDate).toISOString().slice(0, 16)
+        : '';
+
+      this.orderForm.patchValue({
+        ...order,
+        orderDate: formattedDate
+      });
       this.orderAddModal.present();
     }
   }
@@ -102,5 +114,25 @@ export class ListPage implements OnInit {
       position: 'bottom'
     });
     toast.present();
+  }
+  openNewOrderModal() {
+    this.currentOrderId = null;
+    this.orderForm.reset({
+      orderNo: '',
+      cakeSize: '6',
+      cakeContent: 'Çikolatalı',
+      orderDate: this.currentDate,
+      customerName: '',
+      customerPhone: '',
+      description: '',
+      balance: '0',
+      deposit: '0',
+      status: 'todo'
+    });
+    this.orderAddModal.present();
+  }
+  openPopover(order: Order) {
+    this.selectOrder=order
+    this.popover.present();
   }
 }
