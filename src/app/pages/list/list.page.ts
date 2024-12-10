@@ -5,9 +5,15 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { OrderService } from '../../shared/services/order.service';
-import { IonPopover, ToastController } from '@ionic/angular';
+import { IonicModule, IonPopover, ToastController } from '@ionic/angular';
 import { Order, ORDER_STATUS } from '../../shared/models/order.dto';
 import { LastUpdate } from '../../shared/models/user.dto';
 import domtoimage from 'dom-to-image';
@@ -15,12 +21,15 @@ import { Share } from '@capacitor/share';
 import { Capacitor } from '@capacitor/core';
 import { PrinterService } from 'src/app/shared/services/printer.service';
 import { AlertController } from '@ionic/angular/standalone';
+import { Directory, Filesystem } from '@capacitor/filesystem';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.page.html',
   styleUrls: ['./list.page.scss'],
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
 })
 export class ListPage implements OnInit {
   @ViewChild('orderAddModal') orderAddModal!: HTMLIonModalElement;
@@ -209,24 +218,30 @@ export class ListPage implements OnInit {
     if (!previewRef) return;
     (previewRef as HTMLDivElement).style.transform = 'scale(1)';
     domtoimage
-      .toBlob(document.querySelector('#order-share .order-preview')!, {
+      .toJpeg(document.querySelector('#order-share .order-preview')!, {
         quality: 1,
       })
       .then(async (res) => {
         try {
           if (Capacitor.isNativePlatform()) {
+            const cachedFile = await Filesystem.writeFile({
+              data: res,
+              path: 'siparis-no-' + new Date().getMilliseconds() + '.jpg',
+              directory: Directory.Cache,
+            });
             await Share.share({
               text: 'Sipariş Numarası: ' + this.selectOrder?.orderNo,
-              url: URL.createObjectURL(res),
+              url: cachedFile.uri,
             });
           } else {
+            const blob = this.b64toBlob(res, 'image/jpeg');
             const data = {
               files: [
                 new File(
-                  [res],
+                  [blob],
                   'siparis-no-' + this.selectOrder?.orderNo + '.png',
                   {
-                    type: res.type,
+                    type: blob.type,
                   }
                 ),
               ],
@@ -277,4 +292,24 @@ export class ListPage implements OnInit {
 
     await alertRef.present();
   }
+
+  b64toBlob = (b64Data: string, contentType = '', sliceSize = 512) => {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+  };
 }

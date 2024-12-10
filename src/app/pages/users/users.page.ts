@@ -1,13 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from "../../shared/services/auth.service";
-import { User } from "../../shared/models/user.dto";
-import { AlertController, ToastController, ModalController } from "@ionic/angular";
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../shared/services/auth.service';
+import { User } from '../../shared/models/user.dto';
+import {
+  AlertController,
+  ToastController,
+  ModalController,
+  IonicModule,
+} from '@ionic/angular';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
   styleUrls: ['./users.page.scss'],
+  standalone: true,
+  imports: [CommonModule, IonicModule, ReactiveFormsModule],
 })
 export class UsersPage implements OnInit {
   @ViewChild('userAddModal') userAddModal!: HTMLIonModalElement;
@@ -42,11 +55,11 @@ export class UsersPage implements OnInit {
     this._serviceAuth.getAllUsers().subscribe({
       next: (response) => {
         this.users = response
-          .filter(user => user.id !== userInfo.id)
-          .map(user => ({
+          .filter((user) => user.id !== userInfo.id)
+          .map((user) => ({
             username: user.username,
             fullname: user.fullname || '',
-            role:user.role,
+            role: user.role,
             id: user.id,
           }));
       },
@@ -69,7 +82,7 @@ export class UsersPage implements OnInit {
           handler: () => {
             this._serviceAuth.deleteUser(userId || '').subscribe({
               next: async () => {
-                this.users = this.users.filter(user => user.id !== userId);
+                this.users = this.users.filter((user) => user.id !== userId);
                 const toast = await this.toastController.create({
                   message: 'Kullanıcı başarıyla silindi.',
                   duration: 2000,

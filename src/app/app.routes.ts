@@ -6,13 +6,12 @@ export const routes: Routes = [
     path: '',
     canActivate: [SessionGuard],
     loadChildren: () =>
-      import('./pages/pages.module').then((m) => m.PagesModule),
+      import('./pages/pages.routes').then((m) => m.pagesRoute),
   },
   {
     path: 'login',
     canActivate: [OfflineGuardService],
-    loadChildren: () =>
-      import('./login/login.module').then((m) => m.LoginPageModule),
+    loadComponent: () => import('./login/login.page').then((m) => m.LoginPage),
   },
   {
     path: '**',

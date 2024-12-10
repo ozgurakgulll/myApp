@@ -1,4 +1,4 @@
-<ion-content fullscreen>
+<ion-content>
   <div class="my-2" [formGroup]="filterForm">
     <div
       class="flex px-2 justify-between sm:flex-row flex-col gap-4 w-full items-stretch sm:items-center"
@@ -62,63 +62,63 @@
   </div>
   <div class="px-2">
     @for (order of orders; track $index) {
-    <div class="">
-      <ion-list>
-        <ion-card>
-          <ion-card-content>
-            <ion-item lines="none">
-              <div class="">
-                <div class="flex flex-col mt-2">
-                  <div class="w-full flex justify-between">
-                    <span class="text-xs text-stone-600"
-                      >{{ order.orderNo || 'Sipariş No Yok' }}
-                    </span>
+    <div class="w-full">
+      <ion-card style="--padding: 0">
+        <ion-card-content>
+          <ion-item lines="none">
+            <div class="w-full">
+              <div class="flex flex-col w-full">
+                <div class="w-full flex justify-between">
+                  <span class="text-xs text-stone-600"
+                    >{{ order.orderNo || 'Sipariş No Yok' }}
+                  </span>
 
-                    <span class="text-xs text-stone-600">
-                      {{ order.orderDate | date: 'dd/MM/yyyy HH:mm' }}
-                    </span>
-                  </div>
-                  <div class="flex">
-                    <div class="w-5/6">
-                      <div class="font-bold text-sm max-w-[80%] truncate">
-                        {{ order.customerName || '-' }}
-                      </div>
-
-                      <a
-                        class="text-xs text-stone-400 space-x-1 mt-1 flex justify-start items-center text-center"
-                        href="tel:{{order.customerPhone}}"
-                      >
-                        <ion-icon name="call"></ion-icon>
-                        <span> {{ order.customerPhone || '-' }} </span>
-                      </a>
+                  <span class="text-xs text-stone-600">
+                    {{ order.orderDate | date: 'dd/MM/yyyy HH:mm' }}
+                  </span>
+                </div>
+                <div class="flex">
+                  <div class="w-5/6">
+                    <div class="font-bold text-sm max-w-[80%] truncate">
+                      {{ order.customerName || '-' }}
                     </div>
+
+                    <a
+                      class="text-xs text-stone-400 space-x-1 mt-1 flex justify-start items-center text-center"
+                      href="tel:{{order.customerPhone}}"
+                    >
+                      <ion-icon icon="call"></ion-icon>
+                      <span> {{ order.customerPhone || '-' }} </span>
+                    </a>
                   </div>
                 </div>
               </div>
-              <ion-icon
-                slot="end"
-                name="ellipsis-vertical"
-                size="large"
-                (click)="openPopover(order)"
-                id="open-popover"
-              ></ion-icon>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
-      </ion-list>
+            </div>
+            <ion-icon
+              slot="end"
+              name="ellipsis-vertical"
+              size="large"
+              (click)="openPopover(order)"
+              id="open-popover"
+            ></ion-icon>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
     </div>
     }
   </div>
 </ion-content>
 
 <ion-footer>
-  <button
-    (click)="openNewOrderModal()"
-    type="submit"
-    class="disabled:bg-gray-500 flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-  >
-    Yeni Sipariş Ekle
-  </button>
+  <div class="px-2 my-2">
+    <button
+      (click)="openNewOrderModal()"
+      type="submit"
+      class="disabled:bg-gray-500 flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+    >
+      Yeni Sipariş Ekle
+    </button>
+  </div>
 </ion-footer>
 
 <ion-modal #orderAddModal>

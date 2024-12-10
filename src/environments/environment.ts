@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://izmirincisi.shop/api',
+  apiUrl: 'https://api.izmirincisi.shop/api',
 };
 
 /*
