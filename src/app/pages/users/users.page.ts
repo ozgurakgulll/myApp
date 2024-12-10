@@ -1,26 +1,52 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '../../shared/services/auth.service';
-import { User } from '../../shared/models/user.dto';
-import {
-  AlertController,
-  ToastController,
-  ModalController,
-  IonicModule,
-} from '@ionic/angular';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
+import { User } from '../../shared/models/user.dto';
+import { AuthService } from '../../shared/services/auth.service';
+import {
+  AlertController,
+  ToastController,
+  IonContent,
+  IonButtons,
+  IonButton,
+  IonFooter,
+  IonModal,
+  IonIcon,
+  IonList,
+  IonItem,
+  IonCardContent,
+  IonCardHeader,
+  IonCard,
+  IonLabel,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
   styleUrls: ['./users.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule],
+  imports: [
+    IonLabel,
+    IonCard,
+    IonCardHeader,
+    IonCardContent,
+    IonItem,
+    IonList,
+    IonIcon,
+    IonModal,
+    IonFooter,
+    IonButton,
+    IonButtons,
+    IonContent,
+    CommonModule,
+    ReactiveFormsModule,
+  ],
 })
 export class UsersPage implements OnInit {
   @ViewChild('userAddModal') userAddModal!: HTMLIonModalElement;

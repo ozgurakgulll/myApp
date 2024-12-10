@@ -7,15 +7,22 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IonicModule, NavController } from '@ionic/angular';
 import { AuthService } from '../shared/services/auth.service';
+import { NavController } from '@ionic/angular';
+import { IonContent, IonIcon } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule],
+  imports: [
+    IonIcon,
+    IonContent,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class LoginPage {
   loginForm: FormGroup;

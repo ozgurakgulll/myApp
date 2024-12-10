@@ -1,5 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule, NavController } from '@ionic/angular';
+import {
+  NavController,
+  IonHeader,
+  IonContent,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTabBar,
+  IonTabs,
+  IonTabButton,
+  IonLabel,
+} from '@ionic/angular/standalone';
 import { User } from '../shared/models/user.dto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +22,21 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './pages.component.html',
   styleUrls: ['./pages.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule],
+  imports: [
+    IonLabel,
+    IonTabButton,
+    IonTabs,
+    IonTabBar,
+    IonIcon,
+    IonButton,
+    IonButtons,
+    IonTitle,
+    IonToolbar,
+    IonContent,
+    IonHeader,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class PagesComponent implements OnInit {
   userInfo: User = {};

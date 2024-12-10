@@ -41,7 +41,7 @@
       <ion-modal #orderDateFilterModal [keepContentsMounted]="true">
         <ng-template>
           <ion-datetime
-            formControlName="orderDate"
+            [formControl]="filterForm.controls.orderDate"
             presentation="date"
             id="orderDateFilterModal"
             locale="tr"
@@ -146,9 +146,8 @@
               <input
                 id="cakeSize"
                 formControlName="cakeSize"
-                type="number"
                 class="block w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Pastanın Boyutu"
+                placeholder="Pastanın Ebatı"
                 required
               />
               <div
@@ -460,6 +459,8 @@
             height: 100%;
             width: 100%;
             transform: scale(0.7);
+            padding: 10px 20px;
+            position: relative;
           "
         >
           <div
@@ -684,6 +685,21 @@
             >
               {{selectOrder.description}}
             </label>
+          </div>
+          <div
+            style="
+              position: absolute;
+              opacity: 0.02;
+              top: 67%;
+              left: 33%;
+              transform: translate(-47%, -29%);
+              font-size: 3rem;
+              width: 100%;
+              text-align: center;
+              rotate: 45deg;
+            "
+          >
+            Akgül Software
           </div>
         </div>
         }

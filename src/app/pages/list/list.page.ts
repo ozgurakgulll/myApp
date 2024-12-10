@@ -13,14 +13,30 @@ import {
   Validators,
 } from '@angular/forms';
 import { OrderService } from '../../shared/services/order.service';
-import { IonicModule, IonPopover, ToastController } from '@ionic/angular';
 import { Order, ORDER_STATUS } from '../../shared/models/order.dto';
 import { LastUpdate } from '../../shared/models/user.dto';
 import domtoimage from 'dom-to-image';
 import { Share } from '@capacitor/share';
 import { Capacitor } from '@capacitor/core';
 import { PrinterService } from 'src/app/shared/services/printer.service';
-import { AlertController } from '@ionic/angular/standalone';
+import {
+  AlertController,
+  IonPopover,
+  ToastController,
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonItem,
+  IonIcon,
+  IonModal,
+  IonFooter,
+  IonDatetimeButton,
+  IonSelectOption,
+  IonSearchbar,
+  IonList,
+  IonSelect,
+  IonDatetime,
+} from '@ionic/angular/standalone';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { CommonModule } from '@angular/common';
 
@@ -29,7 +45,25 @@ import { CommonModule } from '@angular/common';
   templateUrl: './list.page.html',
   styleUrls: ['./list.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    IonDatetime,
+    IonList,
+    IonDatetimeButton,
+    IonFooter,
+    IonModal,
+    IonIcon,
+    IonItem,
+    IonContent,
+    IonCardContent,
+    IonCard,
+    IonSelectOption,
+    IonSearchbar,
+    IonPopover,
+    IonSelect,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class ListPage implements OnInit {
   @ViewChild('orderAddModal') orderAddModal!: HTMLIonModalElement;
@@ -59,8 +93,8 @@ export class ListPage implements OnInit {
       customerName: ['', Validators.required],
       customerPhone: ['', Validators.required],
       description: [''],
-      balance: ['0', Validators.required],
-      deposit: ['0'],
+      balance: [0, Validators.required],
+      deposit: [0],
       status: ['todo', Validators.required],
     });
   }
@@ -144,14 +178,14 @@ export class ListPage implements OnInit {
     this.currentOrderId = null;
     this.orderForm.reset({
       orderNo: '',
-      cakeSize: '6',
-      cakeContent: 'Çikolatalı',
+      cakeSize: '',
+      cakeContent: '',
       orderDate: this.currentDate,
       customerName: '',
       customerPhone: '',
       description: '',
-      balance: '0',
-      deposit: '0',
+      balance: 0,
+      deposit: 0,
       status: 'todo',
     });
     this.orderAddModal.present();
@@ -234,7 +268,8 @@ export class ListPage implements OnInit {
               url: cachedFile.uri,
             });
           } else {
-            const blob = this.b64toBlob(res, 'image/jpeg');
+            const blob = this.b64toBlob(res, 'image/png');
+            console.log(blob.type);
             const data = {
               files: [
                 new File(
@@ -294,6 +329,7 @@ export class ListPage implements OnInit {
   }
 
   b64toBlob = (b64Data: string, contentType = '', sliceSize = 512) => {
+    b64Data = b64Data.split(',')[1];
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
 
