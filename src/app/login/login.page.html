@@ -1,49 +1,70 @@
 <ion-content class="ion-padding">
-  <div class="flex min-h-full flex-col justify-center px-6 ">
+  <div class="flex min-h-full flex-col justify-center px-6">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <ion-img class="mx-auto h-52 w-auto" src="assets/logo.svg" alt="Your Company"></ion-img>
-      <h2 class="mt-2 text-center text-2xl/9 font-bold tracking-tight text-gray-900">İzmir İncisi</h2>
+      <ion-img
+        class="mx-auto h-52 w-auto"
+        src="/assets/logo.svg"
+        alt="Your Company"
+      ></ion-img>
+      <h2
+        class="mt-2 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
+      >
+        İzmir İncisi
+      </h2>
     </div>
     <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
         <div>
-          <label for="user" class="block text-sm/6 font-medium text-gray-900">Kullanıcı Adı</label>
+          <label for="user" class="block text-sm/6 font-medium text-gray-900"
+            >Kullanıcı Adı</label
+          >
           <div class="mt-2">
             <input
               id="user"
               formControlName="username"
               type="text"
               autocomplete="kullanıcı adı"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-base text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
-            <small *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="text-red-500">
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-base text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+            <small
+              *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+              class="text-red-500"
+            >
               {{ getErrorMessage('username') }}
             </small>
           </div>
         </div>
 
         <div>
-          <label for="password" class="block text-sm/6 font-medium text-gray-900">Şifre</label>
+          <label
+            for="password"
+            class="block text-sm/6 font-medium text-gray-900"
+            >Şifre</label
+          >
           <div class="mt-2">
             <input
               id="password"
               formControlName="password"
               type="password"
               autocomplete="current-password"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-base text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
-            <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500">
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-base text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+            <small
+              *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+              class="text-red-500"
+            >
               {{ getErrorMessage('password') }}
             </small>
           </div>
         </div>
 
         <div>
-          <div class="text-red-600">
-            {{errorMessager}}
-          </div>
+          <div class="text-red-600">{{errorMessager}}</div>
           <button
             type="submit"
             [disabled]="loginForm.invalid"
-            class="disabled:bg-gray-500 flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            class="disabled:bg-gray-500 flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
             Giriş Yap
           </button>
         </div>
