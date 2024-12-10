@@ -13,6 +13,8 @@ import { LastUpdate } from '../../shared/models/user.dto';
 import domtoimage from 'dom-to-image';
 import { Share } from '@capacitor/share';
 import { Capacitor } from '@capacitor/core';
+import { PrinterService } from 'src/app/shared/services/printer.service';
+import { AlertController } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-list',
@@ -29,10 +31,13 @@ export class ListPage implements OnInit {
   currentOrderId: string | null = null;
   currentDate: string = new Date().toISOString().split('.')[0];
   lastUpdate: LastUpdate[] = [];
+  isMobile = Capacitor.isNativePlatform();
   constructor(
     private _orderService: OrderService,
     private toastController: ToastController,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private printerService: PrinterService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -237,5 +242,39 @@ export class ListPage implements OnInit {
           (previewRef as HTMLDivElement).style.transform = 'scale(0.7)';
         }
       });
+  }
+
+  async print() {
+    this.popover.dismiss();
+    const alertRef = await this.alertController.create({
+      header: 'Yazıcı IP',
+      message: 'ESC Terminal yazıcı ip adresi girerek yazdırabilirsiniz',
+      inputs: [
+        {
+          value: '192.168.1.100',
+          name: 'terminalIp',
+        },
+      ],
+      buttons: [
+        {
+          text: 'İptal',
+          role: 'cancel',
+        },
+        {
+          text: 'Onayla',
+          handler: (value) => {
+            if (value.terminalIp.length > 0) {
+              this.printerService.terminalIp = value.terminalIp;
+              if (!this.selectOrder) return;
+              this.printerService.printOrder(this.selectOrder);
+              return true;
+            }
+            return false;
+          },
+        },
+      ],
+    });
+
+    await alertRef.present();
   }
 }
